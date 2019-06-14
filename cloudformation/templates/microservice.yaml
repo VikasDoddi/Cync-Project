@@ -149,7 +149,7 @@ Parameters:
     #Default: '/dev/vikas/nginx'
 
   EnvironmentName:
-    Type: string
+    Type: String
     Default: 'dev'
 
 Resources:

@@ -53,7 +53,7 @@ Parameters:
     Default: 'Sg-ecs_cluster'
 
   EnvironmentName:
-    Type: string
+    Type: String
     Default: 'dev'
 
 Resources:
