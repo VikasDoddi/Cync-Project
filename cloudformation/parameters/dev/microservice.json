@@ -2,5 +2,13 @@
   {
     "ParameterKey": "ServiceNameWeb",
     "ParameterValue": "microservice-audit_service"
+  },
+  {
+    "ParameterKey": "ClusterName"
+    "ParameterValue": "Cync-microservice_cluster"
+  },
+  {
+    "ParameterKey": "SgEcs"
+    "ParameterValue": "Sg-cync_cluster"
   }
 ]
