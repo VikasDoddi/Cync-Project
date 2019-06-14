@@ -3,7 +3,7 @@ node {
             checkout scm
        }
         stage('microservice'){
-            sh 'aws --region us-east-1 cloudformation ${Action}-stack --stack-name ${Environment}-${Stack} --template-body file://./Templates/microservice.yml --parameters file://./parameters/${Environment}/microservice.json'
+            sh 'aws --region us-east-1 cloudformation ${Action}-stack --stack-name ${Environment}-${Stack} --template-body file://./templates/microservice.yml --parameters file://./parameters/${Environment}/microservice.json'
        }
 
         stage('Stack Status'){
