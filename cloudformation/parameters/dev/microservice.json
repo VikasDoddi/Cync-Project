@@ -4,11 +4,11 @@
     "ParameterValue": "microservice-audit_service"
   },
   {
-    "ParameterKey": "ClusterName"
+    "ParameterKey": "ClusterName",
     "ParameterValue": "Cync-microservice_cluster"
   },
   {
-    "ParameterKey": "SgEcs"
+    "ParameterKey": "SgEcs",
     "ParameterValue": "Sg-cync_cluster"
   }
 ]
