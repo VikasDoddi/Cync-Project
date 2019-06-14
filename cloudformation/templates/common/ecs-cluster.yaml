@@ -2,14 +2,14 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: 'This ia a basic stack'
 
 Parameters:
-  ClusterName: 
+  ClusterName:
     Type: String
     Default: 'Vikas-ecs-cluster'
 
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
     Default: 'Vikas'
-  
+
   AmiId:
     Type: String
     Description: 'Specify the AMI for EC2 Instance'
@@ -29,7 +29,7 @@ Parameters:
     Type: Number
     Default: '3'
     Description: ' Specify the Maximum number of EC2 Instances in the Auto Scaling Group'
-  
+
   AutoScalingGroupName:
     Type: String
     Default: 'As_for_ecs-vikas'
@@ -52,11 +52,15 @@ Parameters:
     Type: String
     Default: 'Sg-ecs_cluster'
 
+  EnvironmentName:
+    Type: string
+    Default: 'dev'
+
 Resources:
   MicroserviceCluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: !Ref ClusterName
+      ClusterName: !Join ["-", ["!Ref EnvironmentName", "!Ref ClusterName"]]
 
   AutoScaling:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -67,7 +71,7 @@ Resources:
       MinSize: !Ref MinSize
       MaxSize: !Ref MaxSize
       DesiredCapacity: !Ref DesiredCapacity
-      
+
   LaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
@@ -78,23 +82,23 @@ Resources:
         Fn::Base64:
           !Sub |
           #!/bin/bash
-          echo ECS_CLUSTER=${ClusterName} >> /etc/ecs/ecs.config; 
+          echo ECS_CLUSTER=${ClusterName} >> /etc/ecs/ecs.config;
           echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;
-      SecurityGroups: 
+      SecurityGroups:
         - !Ref SecurityGroups
       IamInstanceProfile: ecsInstanceRole
-  
+
   SecurityGroups:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: 'This Security Group is used to secure the cloud Instances'
-      GroupName: !Ref SgEcs
-      
+      GroupName: !Join [ "-", ["!Ref EnvironmentName", "!Ref SgEcs"]]
+
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 0.0.0.0/0 
+          CidrIp: 0.0.0.0/0
 
         - IpProtocol: tcp
           FromPort: 80
@@ -106,4 +110,4 @@ Resources:
           ToPort: 65000
           CidrIp: 0.0.0.0/0
 
-      VpcId: !Ref VpcId 
+      VpcId: !Ref VpcId
