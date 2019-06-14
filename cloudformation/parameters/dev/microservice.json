@@ -1,0 +1,6 @@
+[
+  {
+    "ParameterKey": "Dockerimage"
+    "ParameterValue": "idexcelinterns/vikas-audit_service:26"
+  }
+]

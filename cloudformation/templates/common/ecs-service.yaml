@@ -1,0 +1,154 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: 'This specify the VPC in which EC2 will be launched'
+    Default: 'vpc-73cc6a09'
+
+  SubnetId:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: 'This specify the Subnet in which EC2 will be launched'
+    Default: 'subnet-1a793515'
+
+  LoadBalancerName:
+    Type: String
+    Description: 'Specify the Load Balancer'
+    Default: 'Idexcel-intern'
+
+  LoadBalancerListenerArn:
+    Type: String
+    Description: 'Specify the App Load Balancer'
+    Default: 'arn:aws:elasticloadbalancing:us-east-1:012515449968:listener/app/Idexcel-intern/f86aa70a21a798f8/1fcceba165b8e7ac'
+
+  ClusterName: 
+    Type: String
+    Default: 'Vikas-ecs-cluster'
+
+  NetworkMode:
+    Type: String
+    Description: 'Specify the the Network type'
+    Default: 'bridge'
+    AllowedValues: [awsvpc, bridge, host, none]
+  
+  IAMRole:
+    Type: String
+    Description: 'Specify the IAM Role for service and Load Balancer'
+    Default: 'AWSServiceRoleForECS'
+
+  DesiredCount:
+    Type: Number
+    Description: 'Specify the number of tasks to run in a service'
+    Default: '1'
+
+  HealthCheckGrace:
+    Type: Number
+    Description: 'Grace period in seconds to check health'
+    Default: '5'
+
+  ServiceName:
+    Type: String
+    Default: nginx
+
+  LaunchType:
+    Type: String
+    Default: EC2
+    AllowedValues: [Fargate, EC2]
+
+  CpuForNginx:
+    Type: Number
+    Default: 256
+
+  MemoryForNginx:
+    Type: Number
+    Default: 256
+
+  ContainerPort:
+    Type: Number
+    Default: 80
+
+  Priority:
+    Type: Number
+    Default: 1
+
+  ServiceNameWeb:
+    Type: String
+    Default: Nginx-web-servers
+
+  ListenerRuleTargetGroupType:
+    Type: String
+    Default: forward
+    AllowedValues: [forward, authenticate-cognito, authenticate-oidc, fixed-response, forward redirect]
+  
+  ListenerRuleConditionField:
+    Type: String
+    Default: path-pattern
+    AllowedValues: [http-header, http-request-method, host-header, path-pattern, query-string, source-ip]
+
+  ListenerRuleConditionValue:
+    Type: String
+    Default: /praveen/audits
+
+  HealthCheckPath:
+    Type: String
+    Default: /
+
+  Dockerimage:
+    Type: String
+    Default: idexcelinterns/vikas-audit_service:latest
+
+Resources: 
+  DefaultTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !Ref VpcId
+      HealthCheckPath: !Ref HealthCheckPath
+      Protocol: 'HTTP'
+      Port: '80'
+
+  AppLoadBalancerListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule 
+    Properties:
+      ListenerArn: !Ref LoadBalancerListenerArn
+      Conditions:
+      - Field: !Ref ListenerRuleConditionField
+        Values: 
+          - !Ref ListenerRuleConditionValue
+      Actions:
+      - TargetGroupArn: !Ref DefaultTargetGroup
+        Type: !Ref ListenerRuleTargetGroupType
+      Priority: !Ref Priority
+  
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+      -
+        Name: !Ref ServiceName
+        Cpu: !Ref CpuForNginx
+        Memory: !Ref MemoryForNginx
+        Image: !Ref Dockerimage
+        PortMappings:
+        -
+          ContainerPort: !Ref ContainerPort
+          HostPort: 0
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Ref ServiceNameWeb
+      Cluster: !Ref ClusterName
+      TaskDefinition: !Ref TaskDefinition
+      DesiredCount: !Ref DesiredCount
+      HealthCheckGracePeriodSeconds: !Ref HealthCheckGrace
+      LaunchType: !Ref LaunchType
+      LoadBalancers: 
+      - 
+        ContainerName: !Ref ServiceName 
+        ContainerPort: !Ref ContainerPort
+        TargetGroupArn: !Ref DefaultTargetGroup
+ 
+      
+
+
+
+
+  

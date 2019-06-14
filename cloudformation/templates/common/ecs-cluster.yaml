@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'This ia a basic stack'
+
+Parameters:
+  ClusterName: 
+    Type: String
+    Default: 'Vikas-ecs-cluster'
+
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: 'Vikas'
+  
+  AmiId:
+    Type: String
+    Description: 'Specify the AMI for EC2 Instance'
+    Default: 'ami-00cf4737e238866a3'
+
+  InstanceType:
+    Description: 'This will specify the size of the EC2 Instance'
+    Type: String
+    Default: t2.micro
+    AllowedValues: [t2.micro,t2.small,t2.medium]
+
+  MinSize:
+    Type: Number
+    Default: '1'
+
+  MaxSize:
+    Type: Number
+    Default: '3'
+    Description: ' Specify the Maximum number of EC2 Instances in the Auto Scaling Group'
+  
+  AutoScalingGroupName:
+    Type: String
+    Default: 'As_for_ecs-vikas'
+
+  DesiredCapacity:
+    Type: Number
+    Default: '1'
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: 'This specify the VPC in which EC2 will be launched'
+    Default: 'vpc-73cc6a09'
+
+  SubnetId:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: 'This specify the Subnet in which EC2 will be launched'
+    Default: 'subnet-1a793515'
+
+  SgEcs:
+    Type: String
+    Default: 'Sg-ecs_cluster'
+
+Resources:
+  MicroserviceCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Ref ClusterName
+
+  AutoScaling:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: !Ref AutoScalingGroupName
+      LaunchConfigurationName: !Ref LaunchConfig
+      VPCZoneIdentifier: !Ref SubnetId
+      MinSize: !Ref MinSize
+      MaxSize: !Ref MaxSize
+      DesiredCapacity: !Ref DesiredCapacity
+      
+  LaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      KeyName: !Ref KeyName
+      ImageId: !Ref AmiId
+      InstanceType: !Ref InstanceType
+      UserData:
+        Fn::Base64:
+          !Sub |
+          #!/bin/bash
+          echo ECS_CLUSTER=${ClusterName} >> /etc/ecs/ecs.config; 
+          echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;
+      SecurityGroups: 
+        - !Ref SecurityGroups
+      IamInstanceProfile: ecsInstanceRole
+  
+  SecurityGroups:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'This Security Group is used to secure the cloud Instances'
+      GroupName: !Ref SgEcs
+      
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0 
+
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+        - IpProtocol: tcp
+          FromPort: 32765
+          ToPort: 65000
+          CidrIp: 0.0.0.0/0
+
+      VpcId: !Ref VpcId 

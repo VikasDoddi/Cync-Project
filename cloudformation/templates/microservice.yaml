@@ -1,0 +1,176 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  ClusterName:
+    Type: String
+    Default: 'Vikas-ecs-cluster'
+
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: 'Vikas'
+
+  AmiId:
+    Type: String
+    Description: 'Specify the AMI for EC2 Instance'
+    Default: 'ami-00cf4737e238866a3'
+
+  InstanceType:
+    Description: 'This will specify the size of the EC2 Instance'
+    Type: String
+    Default: t2.micro
+    AllowedValues: [t2.micro,t2.small,t2.medium]
+
+  MinSize:
+    Type: Number
+    Default: '1'
+
+  MaxSize:
+    Type: Number
+    Default: '3'
+    Description: ' Specify the Maximum number of EC2 Instances in the Auto Scaling Group'
+
+  AutoScalingGroupName:
+    Type: String
+    Default: 'As_for_ecs-vikas'
+
+  DesiredCapacity:
+    Type: Number
+    Default: '1'
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: 'This specify the VPC in which EC2 will be launched'
+    Default: 'vpc-73cc6a09'
+
+  SubnetId:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: 'This specify the Subnet in which EC2 will be launched'
+    Default: 'subnet-1a793515'
+
+  SgEcs:
+    Type: String
+    Default: 'Sg-ecs_cluster'
+
+  LoadBalancerName:
+    Type: String
+    Description: 'Specify the Load Balancer'
+    Default: 'Idexcel-intern'
+
+  LoadBalancerListenerArn:
+    Type: String
+    Description: 'Specify the App Load Balancer'
+    Default: 'arn:aws:elasticloadbalancing:us-east-1:012515449968:listener/app/Idexcel-intern/f86aa70a21a798f8/18de440b8c326b69'
+
+  NetworkMode:
+    Type: String
+    Description: 'Specify the the Network type'
+    Default: 'bridge'
+    AllowedValues: [awsvpc, bridge, host, none]
+
+  IAMRole:
+    Type: String
+    Description: 'Specify the IAM Role for service and Load Balancer'
+    Default: 'AWSServiceRoleForECS'
+
+  DesiredCount:
+    Type: Number
+    Description: 'Specify the number of tasks to run in a service'
+    Default: '1'
+
+  HealthCheckGrace:
+    Type: Number
+    Description: 'Grace period in seconds to check health'
+    Default: '5'
+
+  ServiceName:
+    Type: String
+    Default: nginx
+
+  LaunchType:
+    Type: String
+    Default: EC2
+    AllowedValues: [Fargate, EC2]
+
+  CpuForNginx:
+    Type: Number
+    Default: 256
+
+  MemoryForNginx:
+    Type: Number
+    Default: 256
+
+  ContainerPort:
+    Type: Number
+    Default: 8080
+
+  #ContainerPortTwo:
+    #Type: Number
+    #Default: 8080
+
+  Priority:
+    Type: Number
+    Default: 1
+
+  ServiceNameWeb:
+    Type: String
+    Default: service_audit
+
+  #ServiceNameWebTwo:
+    #Type: String
+    #Default: Nginx
+
+  ListenerRuleTargetGroupType:
+    Type: String
+    Default: forward
+    AllowedValues: [forward, authenticate-cognito, authenticate-oidc, fixed-response, forward redirect]
+
+  ListenerRuleConditionField:
+    Type: String
+    Default: path-pattern
+    AllowedValues: [http-header, http-request-method, host-header, path-pattern, query-string, source-ip]
+
+  ListenerRuleConditionValue:
+    Type: String
+    Default: /praveen/audits
+
+  HealthCheckPath:
+    Type: String
+    Default: /praveen/audits
+
+  #HealthCheckPathTwo:
+    #Type: String
+    #Default: /
+
+  Dockerimage:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dev/vikas/ms1_docker_path'
+
+  #DockerimageTwo:
+    #Type: 'AWS::SSM::Parameter::Value<String>'
+    #Default: '/dev/vikas/nginx'
+
+Resources:
+  MicroserviceProject:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/vikas.cloudformation/ecs-cluster.yaml
+
+  EcsService:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        Dockerimage: !Ref Dockerimage
+        ContainerPort: !Ref ContainerPort
+        ServiceNameWeb: !Ref ServiceNameWeb
+        HealthCheckPath: !Ref HealthCheckPath
+      TemplateURL: https://s3.amazonaws.com/vikas.cloudformation/ecs-service.yaml
+
+
+  #EcsServiceSecond:
+    #Type: AWS::CloudFormation::Stack
+    #Properties:
+      #Parameters:
+        #Dockerimage: !Ref DockerimageTwo
+        #ContainerPort: !Ref ContainerPortTwo
+        #ServiceNameWeb: !Ref ServiceNameWebTwo
+        #HealthCheckPath: !Ref HealthCheckPathTwo
+      #TemplateURL: https://s3.amazonaws.com/vikas.cloudformation/ecs-service.yaml
