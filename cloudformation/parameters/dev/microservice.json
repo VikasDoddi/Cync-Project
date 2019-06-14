@@ -1,11 +1,6 @@
 [
   {
-<<<<<<< HEAD
     "ParameterKey": "ServiceNameWeb",
     "ParameterValue": "microservice-audit_service"
-=======
-    "ParameterKey": "Dockerimage",
-    "ParameterValue": "idexcelinterns/vikas-audit_service:26"
->>>>>>> 1aca193a662c8d5af940239048586f0651c576ca
   }
 ]
