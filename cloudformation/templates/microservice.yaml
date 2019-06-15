@@ -156,7 +156,7 @@ Resources:
   MicroserviceProject:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/vikas.cloudformation/ecs-cluster.yaml
+      TemplateURL: https://s3.amazonaws.com/vikas-cyncproject/cloudformation/templates/common/ecs-cluster.yaml
 
   EcsService:
     Type: AWS::CloudFormation::Stack
@@ -166,7 +166,7 @@ Resources:
         ContainerPort: !Ref ContainerPort
         ServiceNameWeb: !Ref ServiceNameWeb
         HealthCheckPath: !Ref HealthCheckPath
-      TemplateURL: https://s3.amazonaws.com/vikas.cloudformation/ecs-service.yaml
+      TemplateURL: https://s3.amazonaws.com/vikas-cyncproject/cloudformation/templates/common/ecs-service.yaml
 
 
   #EcsServiceSecond:
