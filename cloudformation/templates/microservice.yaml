@@ -158,6 +158,8 @@ Resources:
         SgEcs: !Ref SgEcs
         ClusterName: !Ref ClusterName
         EnvironmentName: !Ref EnvironmentName
+        AutoScalingGroupName: !Ref AutoScalingGroupName
+        LaunchConfig: !Ref LaunchConfig
       TemplateURL: https://s3.amazonaws.com/vikas-cyncproject/cloudformation/templates/common/ecs-cluster.yaml
 
   EcsService:
@@ -168,6 +170,7 @@ Resources:
         ContainerPort: !Ref ContainerPort
         ServiceNameWeb: !Ref ServiceNameWeb
         HealthCheckPath: !Ref HealthCheckPath
+        Priority: !Ref Priority
       TemplateURL: https://s3.amazonaws.com/vikas-cyncproject/cloudformation/templates/common/ecs-service.yaml
 
 
