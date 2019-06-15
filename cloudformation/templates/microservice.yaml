@@ -2,7 +2,6 @@ AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   ClusterName:
     Type: String
-    Default: 'Vikas-ecs-cluster'
 
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
@@ -150,7 +149,6 @@ Parameters:
 
   EnvironmentName:
     Type: String
-    Default: 'dev'
 
 Resources:
   MicroserviceProject:
@@ -159,6 +157,7 @@ Resources:
       Parameters:
         SgEcs: !Ref SgEcs
         ClusterName: !Ref ClusterName
+        EnvironmentName: !Ref EnvironmentName
       TemplateURL: https://s3.amazonaws.com/vikas-cyncproject/cloudformation/templates/common/ecs-cluster.yaml
 
   EcsService:

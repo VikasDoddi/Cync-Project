@@ -10,5 +10,9 @@
   {
     "ParameterKey": "SgEcs",
     "ParameterValue": "Sg-cync_cluster"
+  },
+  {
+    "ParameterKey": "EnvironmentName",
+    "ParameterValue": "dev"
   }
 ]

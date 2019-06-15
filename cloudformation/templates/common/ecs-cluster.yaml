@@ -4,7 +4,6 @@ Description: 'This ia a basic stack'
 Parameters:
   ClusterName:
     Type: String
-    Default: 'Vikas-ecs-cluster'
 
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
@@ -54,8 +53,8 @@ Parameters:
 
   EnvironmentName:
     Type: String
-    Default: 'dev'
-
+    AllowedValues: [dev, test, prod]
+    
 Resources:
   MicroserviceCluster:
     Type: AWS::ECS::Cluster
