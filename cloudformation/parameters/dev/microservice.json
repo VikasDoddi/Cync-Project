@@ -14,5 +14,17 @@
   {
     "ParameterKey": "EnvironmentName",
     "ParameterValue": "dev"
-  }
+  },
+  {
+    "ParameterKey": "AutoScalingGroupName",
+    "ParameterValue": "Cync-AutoScaling"
+  },
+  {
+    "ParameterKey": "LaunchConfig",
+    "ParameterValue": "Cync-cluster_LC"
+  },
+  {
+    "ParameterKey": "Priority",
+    "ParameterValue": "2"
+  },
 ]
