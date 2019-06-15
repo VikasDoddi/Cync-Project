@@ -156,6 +156,9 @@ Resources:
   MicroserviceProject:
     Type: AWS::CloudFormation::Stack
     Properties:
+      Parameters:
+        SgEcs: !Ref SgEcs
+        ClusterName: !Ref ClusterName
       TemplateURL: https://s3.amazonaws.com/vikas-cyncproject/cloudformation/templates/common/ecs-cluster.yaml
 
   EcsService:
