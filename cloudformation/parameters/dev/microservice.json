@@ -20,7 +20,7 @@
     "ParameterValue": "Cync-AutoScaling"
   },
   {
-    "ParameterKey": "LaunchConfig",
+    "ParameterKey": "LaunchConfigName",
     "ParameterValue": "Cync-cluster_LC"
   },
   {

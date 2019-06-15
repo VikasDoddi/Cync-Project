@@ -55,7 +55,7 @@ Parameters:
     Type: String
     AllowedValues: [dev, test, prod]
 
-  LaunchConfig:
+  LaunchConfigName:
     Type: String
 
 Resources:
@@ -68,7 +68,7 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: !Ref AutoScalingGroupName
-      LaunchConfigurationName: !Ref LaunchConfig
+      LaunchConfigurationName: !Ref LaunchConfigName
       VPCZoneIdentifier: !Ref SubnetId
       MinSize: !Ref MinSize
       MaxSize: !Ref MaxSize
