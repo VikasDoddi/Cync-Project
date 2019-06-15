@@ -55,6 +55,9 @@ Parameters:
     Type: String
     AllowedValues: [dev, test, prod]
 
+  LaunchConfig:
+    Type: String
+
 Resources:
   MicroserviceCluster:
     Type: AWS::ECS::Cluster
