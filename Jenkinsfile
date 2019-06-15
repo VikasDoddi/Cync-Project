@@ -9,7 +9,7 @@ node {
         }
 
         stage('microservice'){
-            sh 'aws --region us-east-1 cloudformation ${Action}-stack --stack-name ${Environment}-${Stack} --template-body file://./cloudformation/templates/microservice.yaml --parameters file://./cloudformation/parameters/${Environment}/microservice.json --on-failure DO_NOTHING'
+            sh 'aws --region us-east-1 cloudformation ${Action}-stack --stack-name ${Environment}-${Stack} --template-body file://./cloudformation/templates/microservice.yaml --parameters file://./cloudformation/parameters/${Environment}/microservice.json'
        }
 
         stage('Stack Status'){
