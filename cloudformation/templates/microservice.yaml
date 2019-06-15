@@ -150,6 +150,9 @@ Parameters:
   EnvironmentName:
     Type: String
 
+  LaunchConfig:
+    Type: String
+
 Resources:
   MicroserviceProject:
     Type: AWS::CloudFormation::Stack
