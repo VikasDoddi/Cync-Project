@@ -3,8 +3,8 @@ node {
             checkout scm
        }
         stage('service and cluster update'){
-            sh 'aws s3 cp ./cloudformation/templates/common/ecs-cluster.yaml s3://vikas-cyncproject/cloudformation/templates/common/'
-            sh 'aws s3 cp ./cloudformation/templates/common/ecs-service.yaml s3://vikas-cyncproject/cloudformation/templates/common/'
+            sh 'aws s3 cp ./cloudformation/templates/common/ecs-cluster.yaml s3://vikas-cyncproject/cloudformation/templates/common/ecs-cluster.yaml'
+            sh 'aws s3 cp ./cloudformation/templates/common/ecs-service.yaml s3://vikas-cyncproject/cloudformation/templates/common/ecs-service.yaml'
             sh 'aws s3 cp ./Jenkinsfile s3://vikas-cyncproject/'
         }
 
