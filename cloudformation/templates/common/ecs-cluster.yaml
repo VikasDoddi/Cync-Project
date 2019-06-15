@@ -54,12 +54,12 @@ Parameters:
   EnvironmentName:
     Type: String
     AllowedValues: [dev, test, prod]
-    
+
 Resources:
   MicroserviceCluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: !Join ["-", ["!Ref EnvironmentName", "!Ref ClusterName"]]
+      ClusterName: !Join ["-", [!Ref EnvironmentName, !Ref ClusterName]]
 
   AutoScaling:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -91,7 +91,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: 'This Security Group is used to secure the cloud Instances'
-      GroupName: !Join [ "-", ["!Ref EnvironmentName", "!Ref SgEcs"]]
+      GroupName: !Join [ "-", [!Ref EnvironmentName, !Ref SgEcs]]
 
       SecurityGroupIngress:
         - IpProtocol: tcp
