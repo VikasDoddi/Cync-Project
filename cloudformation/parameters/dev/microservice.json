@@ -16,10 +16,6 @@
     "ParameterValue": "dev"
   },
   {
-    "ParameterKey": "AutoScalingGroupName",
-    "ParameterValue": "Cync-AutoScaling"
-  },
-  {
     "ParameterKey": "Priority",
     "ParameterValue": "11"
   }

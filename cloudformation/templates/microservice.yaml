@@ -27,10 +27,6 @@ Parameters:
     Default: '3'
     Description: ' Specify the Maximum number of EC2 Instances in the Auto Scaling Group'
 
-  AutoScalingGroupName:
-    Type: String
-    Default: 'As_for_ecs-vikas'
-
   DesiredCapacity:
     Type: Number
     Default: '1'
@@ -158,7 +154,6 @@ Resources:
         SgEcs: !Ref SgEcs
         ClusterName: !Ref ClusterName
         EnvironmentName: !Ref EnvironmentName
-        AutoScalingGroupName: !Ref AutoScalingGroupName
       TemplateURL: https://s3.amazonaws.com/vikas-cyncproject/cloudformation/templates/common/ecs-cluster.yaml
 
   EcsService:

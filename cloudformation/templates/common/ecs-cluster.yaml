@@ -29,10 +29,6 @@ Parameters:
     Default: '3'
     Description: ' Specify the Maximum number of EC2 Instances in the Auto Scaling Group'
 
-  AutoScalingGroupName:
-    Type: String
-    Default: 'As_for_ecs-vikas'
-
   DesiredCapacity:
     Type: Number
     Default: '1'
@@ -64,7 +60,6 @@ Resources:
   AutoScaling:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
-      AutoScalingGroupName: !Ref AutoScalingGroupName
       VPCZoneIdentifier: !Ref SubnetId
       MinSize: !Ref MinSize
       MaxSize: !Ref MaxSize
