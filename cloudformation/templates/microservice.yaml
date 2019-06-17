@@ -158,6 +158,7 @@ Resources:
 
   EcsService:
     Type: AWS::CloudFormation::Stack
+    DependsOn: MicroserviceProject
     Properties:
       Parameters:
         Dockerimage: !Ref Dockerimage
