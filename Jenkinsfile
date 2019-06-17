@@ -1,4 +1,8 @@
 node {
+        def DO_NOT_ROLLBACK = "--on-failure DO_NOTHING"
+        if (Action == 'update') {
+          DO_NOT_ROLLBACK = ""
+        }
         stage('pull code from scm'){
             checkout scm
        }
@@ -9,7 +13,7 @@ node {
         }
 
         stage('microservice'){
-            sh 'aws --region us-east-1 cloudformation ${Action}-stack --stack-name ${Environment}-${Stack} --template-body file://./cloudformation/templates/microservice.yaml --parameters file://./cloudformation/parameters/${Environment}/microservice.json --on-failure DO_NOTHING'
+            sh 'aws --region us-east-1 cloudformation ${Action}-stack --stack-name ${Environment}-${Stack} --template-body file://./cloudformation/templates/microservice.yaml --parameters file://./cloudformation/parameters/${Environment}/microservice.json ${DO_NOT_ROLLBACK}'
        }
 
         stage('Stack Status'){
