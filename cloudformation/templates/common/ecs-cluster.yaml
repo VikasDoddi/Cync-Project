@@ -76,7 +76,7 @@ Resources:
         Fn::Base64:
           !Sub |
           #!/bin/bash
-          echo ECS_CLUSTER=${ClusterName} >> /etc/ecs/ecs.config;
+          echo ECS_CLUSTER=${EnvironmentName}-${ClusterName} >> /etc/ecs/ecs.config;
           echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;
       SecurityGroups:
         - !Ref SecurityGroups
