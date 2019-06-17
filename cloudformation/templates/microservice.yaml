@@ -150,9 +150,6 @@ Parameters:
   EnvironmentName:
     Type: String
 
-  LaunchConfigName:
-    Type: String
-
 Resources:
   MicroserviceProject:
     Type: AWS::CloudFormation::Stack
@@ -162,7 +159,6 @@ Resources:
         ClusterName: !Ref ClusterName
         EnvironmentName: !Ref EnvironmentName
         AutoScalingGroupName: !Ref AutoScalingGroupName
-        LaunchConfigName: !Ref LaunchConfigName
       TemplateURL: https://s3.amazonaws.com/vikas-cyncproject/cloudformation/templates/common/ecs-cluster.yaml
 
   EcsService:

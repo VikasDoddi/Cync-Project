@@ -55,9 +55,6 @@ Parameters:
     Type: String
     AllowedValues: [dev, test, prod]
 
-  LaunchConfigName:
-    Type: String
-
 Resources:
   MicroserviceCluster:
     Type: AWS::ECS::Cluster
@@ -68,7 +65,6 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: !Ref AutoScalingGroupName
-      LaunchConfigurationName: !Ref LaunchConfigName
       VPCZoneIdentifier: !Ref SubnetId
       MinSize: !Ref MinSize
       MaxSize: !Ref MaxSize
